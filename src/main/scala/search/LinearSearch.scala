@@ -7,7 +7,7 @@ package search
 object LinearSearch {
   def main(args: Array[String]): Unit = {
     val array: Array[Int] = (1 to 10).toArray
-    
+
     println(indexOf(array, 4)) // random element
     println(indexOf(array, 1)) // first element
     println(indexOf(array, 10)) // last element
@@ -23,4 +23,3 @@ object LinearSearch {
     -1
   }
 }
-

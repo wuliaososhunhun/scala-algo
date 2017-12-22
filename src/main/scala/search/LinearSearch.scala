@@ -1,5 +1,7 @@
 package search
 
+import scala.annotation.tailrec
+
 /**
   * Author: yanyang.wang
   * Date: 19/12/2017
@@ -15,11 +17,16 @@ object LinearSearch {
   }
 
   def indexOf[T](array: Array[T], e: T): Int = {
-    for (i <- array.indices) {
-      if (array(i) == e) {
-        return i
+    @tailrec
+    def indexOfRec(pointerIndex: Int): Int = {
+      if (pointerIndex >= array.length) {
+        -1
+      } else {
+        if (array(pointerIndex) == e) pointerIndex
+        else indexOfRec(pointerIndex + 1)
       }
     }
-    -1
+
+    indexOfRec(0)
   }
 }

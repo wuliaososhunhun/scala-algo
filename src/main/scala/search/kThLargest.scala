@@ -60,7 +60,7 @@ object kThLargest {
           }
         } else {
           if (lowValue > pivot) {
-            val newPivotIndex =  if (high == pivotIndex) low else pivotIndex
+            val newPivotIndex = if (high == pivotIndex) low else pivotIndex
             partialSort(swap(v, low, high), newPivotIndex, low, high - 1)
           } else {
             partialSort(v, pivotIndex, low + 1, high)
@@ -74,7 +74,7 @@ object kThLargest {
       val pivotIndex = randomIndex(low, high)
       val (ps, i) = partialSort(v, pivotIndex, low, high)
       if (i == target) ps(i)
-      else if (target < i){
+      else if (target < i) {
         find(ps, low, i, target)
       } else {
         find(ps, i, high, target)

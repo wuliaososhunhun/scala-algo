@@ -17,6 +17,7 @@ object BoyerMooreSearch {
     val pattern = "Wor"
     println(search(target, pattern))
     println(search(target, pattern.head.toString))
+    println(search(target, "oel"))
     println(search(target, "l"))
     println(search(target, "w"))
     println(search(target, ""))
@@ -58,7 +59,10 @@ object BoyerMooreSearch {
     else {
       val patternLength = pattern.length
       val skipTable: Map[Char, Int] =
-        pattern.zipWithIndex.map { case (c, i) => c -> (patternLength - i - 1) }.toMap
+        pattern.zipWithIndex.map { case (c, i) => c -> {
+          val skip = patternLength - i - 1
+          if (skip == 0) patternLength else skip
+        }}.toMap
 
       def computeRightmostIndex(currentIndex: Int): Int =
         currentIndex + skipTable.getOrElse(target.charAt(currentIndex), patternLength)
@@ -83,8 +87,32 @@ object BoyerMooreSearch {
           rec(newRightmostIndex, newRightmostIndex, patternLength - 1)
         }
       }
+      // rec(patternLength - 1, patternLength - 1, patternLength - 1)
 
-      rec(patternLength - 1, patternLength - 1, patternLength - 1)
+      def matchString(targetIndex: Int): Option[Int] = {
+        (patternLength - 1 to 0 by -1)
+          .zip(targetIndex to 0 by -1)
+          .takeWhile { case (pIndex, tIndex) =>
+            pattern.charAt(pIndex) == target.charAt(tIndex)}
+          .lastOption
+          .filter(_._1 == 0)
+          .map(_._2)
+      }
+
+      @tailrec
+      def rec2(currentRightmostIndex: Int): Option[Int] = {
+        if (currentRightmostIndex >= target.length) None
+        else {
+          matchString(currentRightmostIndex) match {
+            case None =>
+              val newRightmostIndex = computeRightmostIndex(currentRightmostIndex)
+              rec2(newRightmostIndex)
+            case result => result
+          }
+        }
+      }
+
+      rec2(patternLength - 1)
     }
   }
 }

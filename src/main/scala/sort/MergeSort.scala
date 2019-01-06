@@ -8,6 +8,7 @@ object MergeSort {
   def main(args: Array[String]): Unit = {
     test(topDownSort[Int])
     test(bottomUpSort[Int])
+    test(tailrecSort[Int])
   }
 
   private def test(sort: Vector[Int] => Vector[Int]): Unit = {
@@ -17,16 +18,15 @@ object MergeSort {
     val single = Vector(1)
 
 
-    println(sort(sample).toList)
-    println(sort(random).toList)
-    println(sort(empty).toList)
-    println(sort(single).toList)
+    println(sort(sample))
+    println(sort(random))
+    println(sort(empty))
+    println(sort(single))
     println("===")
   }
 
 
   def topDownSort[T: Ordering : ClassTag](vector: Vector[T]): Vector[T] = {
-
 
 
     def sortRec(vector: Vector[T]): Vector[T] = {
@@ -56,7 +56,7 @@ object MergeSort {
 
   def bottomUpSort[T: Ordering : ClassTag](ts: Vector[T]): Vector[T] = {
 
-    def rec(result: Vector[T], unsorted: Vector[T]): Vector[T] ={
+    def rec(result: Vector[T], unsorted: Vector[T]): Vector[T] = {
       if (unsorted.isEmpty) result
       else {
         val target = unsorted.take(result.length)
@@ -68,5 +68,35 @@ object MergeSort {
       case head +: tail => rec(Vector(head), tail)
       case _ => ts
     }
+  }
+
+  def tailrecSort[T: Ordering : ClassTag](ts: Vector[T]): Vector[T] = {
+
+    @tailrec
+    def rec(ts: Vector[T], width: Int, currentIndex: Int): Vector[T] = {
+      if (width >= ts.length) ts
+      else if (currentIndex >= ts.length) {
+        rec(ts, width * 2, 0)
+      } else {
+        if (previousHasMerged(width, currentIndex)) rec(ts, width, currentIndex + width)
+        else {
+          val prev = ts.slice(currentIndex - width, currentIndex)
+          val current = ts.slice(currentIndex, currentIndex + width)
+          val merged = merge(Vector.empty, prev, current)
+          val updatedVector = merged.foldLeft((ts, currentIndex - width)) { (r, newValue) =>
+            val (vector, index) = r
+            (vector.updated(index, newValue), index + 1)
+          }._1
+          rec(updatedVector, width, currentIndex + width)
+        }
+      }
+    }
+
+    def previousHasMerged(width: Int, startIndex: Int): Boolean = {
+      require(width > 0)
+      (startIndex / width) % 2 == 0
+    }
+
+    rec(ts, 1, 0)
   }
 }

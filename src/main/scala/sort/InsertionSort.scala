@@ -11,7 +11,7 @@ import scala.util.Random
 object InsertionSort {
   def main(args: Array[String]): Unit = {
     val sample = Array(10, -1, 3, 9, 2, 27, 8, 5, 1, 3, 0, 26)
-    val random: Array[Int] = Random.shuffle(1 to 20).toArray
+    val random: Array[Int] = Random.shuffle((1 to 20).toList).toArray
     val empty = Array.empty[Int]
     val single = Array(1)
     println(multiArray(sample).toList)

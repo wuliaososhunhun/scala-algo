@@ -13,7 +13,7 @@ object MergeSort {
 
   private def test(sort: Vector[Int] => Vector[Int]): Unit = {
     val sample = Vector(10, 0, 3, 9, 2, 14, 8, 27, 1, 5, 8, -1, 26)
-    val random: Vector[Int] = Random.shuffle(1 to 20).toVector
+    val random: Vector[Int] = Random.shuffle((1 to 20).toVector)
     val empty = Vector.empty[Int]
     val single = Vector(1)
 

@@ -16,7 +16,7 @@ object MinCoinChange {
     println(greedy(6, List(4, 3, 1)))
 
     println("===")
-    
+
     println(dynamic(30, List(25, 10, 5)))
     println(dynamic(11, List(9, 6, 5, 1)))
     println(dynamic(6, List(4, 3, 1)))
@@ -42,7 +42,7 @@ object MinCoinChange {
     require(coins.forall(_ > 0))
 
     def calculateBasedOnSubRoute(paths: Vector[Int], currentIndex: Int): Vector[Int] = {
-      coins.foldLeft(paths){ (p, c) =>
+      coins.foldLeft(paths) { (p, c) =>
         if (currentIndex - c < 0) p
         else {
           val subRoute = p(currentIndex - c)
@@ -54,7 +54,7 @@ object MinCoinChange {
     }
 
     val paths = Vector.fill(v + 1)(Int.MaxValue).updated(0, 0)
-    val result = paths.indices.foldLeft(paths){ (r, i) =>
+    val result = paths.indices.foldLeft(paths) { (r, i) =>
       calculateBasedOnSubRoute(r, i)
     }.last
     if (result == Int.MaxValue) None

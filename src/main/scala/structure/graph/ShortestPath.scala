@@ -28,6 +28,8 @@ object ShortestPath {
           val (pre, current) = head
           graph.find(current) match {
             case None => List.empty
+            case Some(node) if traveled.contains(node.id) =>
+              rec(tail, traveled)
             case Some(node) if node.id == end => pre :+ current
             case Some(node) =>
               val newSearch = (node.neighbours -- traveled).map((pre :+ current,  _)).toList

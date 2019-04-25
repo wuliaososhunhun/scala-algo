@@ -21,10 +21,14 @@ In Scala, an inner class is associated with the outer class’ object. In Java, 
 # Functor
 A type of constructor F[_] with map method `def map(f: A => B): F[B]`
 
+# Monoid and Semigroup (combine only)
+- combine(x: A, y: A): A
+- empty: A 
+
 # Applicative
 ```
 trait Applicative[F[_]] extends Functor[F] {
-  def ap[A, B](ff: F[A => B])(fa: F[A]): F[B]
+  def ap[A, B](ff: F[A => B])(fa: F[A]): F[B] (Apply)
 
   def pure[A](a: A): F[A]
 
@@ -47,3 +51,8 @@ sequence / traverse
 define with flatMap and pure or Applicative with flatten
 - identity rule ma.flatMap(pure) == ma
 - associate rule ma.flatMap(faMb).flatMap(fbMc) == ma.flatMap(a => faMb(a).flatMap(fbMc))
+
+It is a abstraction to compose/link different function. All things are set of something and code is try to transform from 1 set to the other. The category 
+theory try to abstract all interactions between sets in a mathmatcial way (you can call them patterns) so it should include all the changes in your code. Based
+ on that, you can write your code based on these patterns which can solve some issue with less boiler plates. e.g .A-> B, A -> F[B], F[A] -> F[B]
+ 
